@@ -2,7 +2,7 @@
 
 require_relative 'tokenable/version'
 require_relative 'tokenable/authable'
-require_relative 'tokenable/revocable'
+require_relative 'tokenable/verifier'
 require_relative 'tokenable/railtie' if defined?(Rails)
 
 module Tokenable

@@ -64,20 +64,20 @@ const { data } = await axios.get("https://example.com/api/user", {
 });
 ```
 
-### Revocable Tokens
+### Invalidate Tokens
 
-If you want to be able to revoke tokens from the server, then you can add `Tokenable::Revocable`.
+If you want to be able to invalidate tokens from the server, then you can add `Tokenable::Verifier`.
 
 ```ruby
 class User < ApplicationRecord
-  include Tokenable::Revocable
+  include Tokenable::Verifier
 end
 ```
 
 And running the following migration:
 
 ```bash
-rails g migration AddRevokeTokenableVerifierToUsers tokenable_verifier:uuid
+rails g migration AddTokenableVerifierToUsers tokenable_verifier:uuid
 ```
 
 You can now invalidate all tokens by calling `user.invalidate_tokens!`.
