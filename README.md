@@ -22,7 +22,39 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your `routes.rb`, please add:
+
+```ruby
+mount Tokenable::Engine => '/api/auth'
+```
+
+And in your `User` model, please add an Auth strategy, such as:
+
+```ruby
+class User < ApplicationRecord
+  include Tokenable::Strategies::SecurePassword
+
+  has_secure_password
+end
+```
+
+You can chose from:
+
+- `Tokenable::Strategies::SecurePassword`
+- `Tokenable::Strategies::Devise`
+
+You can also create your own stragery. (TODO: link to docs on this)
+
+Once you have this setup, you can login. For example, you could login using `axios` in JavaScript:
+
+```js
+const { data } = await axios.post("https://example.com/api/auth", {
+  email: "email@example.com",
+  password: "coolpassword123",
+});
+
+console.log(data.data.token);
+```
 
 ## Development
 
