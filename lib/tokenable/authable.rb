@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The main controller concern that will be injected to the application
 module Tokenable
   module Authable
