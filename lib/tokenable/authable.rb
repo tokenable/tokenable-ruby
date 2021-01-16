@@ -3,6 +3,7 @@
 # The main controller concern that will be injected to the application
 
 require 'jwt'
+require 'active_support/concern'
 
 module Tokenable
   module Authable
@@ -22,7 +23,7 @@ module Tokenable
     private
 
     def user_class
-      'User'.constantize
+      User
     end
 
     def token_from_header
