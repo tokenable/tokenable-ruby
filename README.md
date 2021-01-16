@@ -64,13 +64,13 @@ const { data } = await axios.get("https://example.com/api/user", {
 });
 ```
 
-### Revokeable Tokens
+### Revocable Tokens
 
-If you want to be able to revoke tokens from the server, then you can add `Tokenable::Revokeable`.
+If you want to be able to revoke tokens from the server, then you can add `Tokenable::Revocable`.
 
 ```ruby
 class User < ApplicationRecord
-  include Tokenable::Revokeable
+  include Tokenable::Revocable
 end
 ```
 

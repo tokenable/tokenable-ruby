@@ -1,5 +1,5 @@
 module Tokenable
-  module Revokable
+  module Revocable
     extend ActiveSupport::Concern
 
     def valid_verifier?(verifier)
