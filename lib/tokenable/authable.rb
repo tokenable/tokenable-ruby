@@ -38,6 +38,17 @@ module Tokenable
       headers['Authorization'].to_s.split(' ').last
     end
 
+    def token_from_user(user_id)
+      jwt_data = {
+        user_id: user_id,
+      }
+      jwt_token = JWT.encode(jwt_data, jwt_secret, 'HS256')
+      {
+        user_id: user_id,
+        token: jwt_token,
+      }
+    end
+
     def jwt_user_id
       jwt['data']['user_id']
     end
