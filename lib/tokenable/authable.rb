@@ -20,6 +20,8 @@ module Tokenable
 
     def current_user
       @current_user ||= user_class.find(jwt_user_id)
+    rescue Tokenable::Unauthorized
+      nil
     end
 
     def require_tokenable_user!
@@ -38,8 +40,6 @@ module Tokenable
 
     def jwt_user_id
       jwt['data']['user_id']
-    rescue Tokenable::Unauthorized
-      nil
     end
 
     def jwt
