@@ -4,7 +4,7 @@ module Tokenable
       email, password = parse_auth_params
 
       # Attempt to find the user
-      user = User.find_by(email: email)
+      user = User.select(:id, :password_digest).find_by(email: email)
       raise Tokenable::Unauthorized unless user
 
       # Ensure password matches
