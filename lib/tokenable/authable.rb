@@ -17,7 +17,7 @@ module Tokenable
     end
 
     def current_user
-      @user ||= user_class.find(jwt_user_id)
+      @current_user ||= user_class.find(jwt_user_id)
     end
 
     private
