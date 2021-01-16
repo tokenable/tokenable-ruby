@@ -1,5 +1,7 @@
 module Tokenable
   class TokensController < ::ActionController::API
+    include Authable
+
     def create
       email, password = parse_auth_params
 
@@ -22,17 +24,13 @@ module Tokenable
       render json: { data: data }, status: 201
     end
 
-    protected
+    private
 
     def parse_auth_params
       [
         params.require(:email),
         params.require(:password),
       ]
-    end
-
-    def jwt_secret
-      Rails.application.secret_key_base
     end
   end
 end
