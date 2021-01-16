@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Marc Qualie", "Scott Robertson"]
   spec.email         = ["marc@marcqualie.com", "scott@scottrobertson.me"]
 
-  spec.summary       = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description   = "TODO: Write a longer description or delete this line."
+  spec.summary       = "JWT authentication for Rails API's"
   spec.homepage      = "https://github.com/tokenable/tokenable-ruby"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
