@@ -6,5 +6,7 @@ require_relative 'tokenable/railtie' if defined?(Rails)
 
 module Tokenable
   class Error < StandardError; end
+  class Unauthorized < Error; end
+
   # Your code goes here...
 end

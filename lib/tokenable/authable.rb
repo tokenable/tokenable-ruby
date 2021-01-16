@@ -14,10 +14,16 @@ module Tokenable
 
     def user_signed_in?
       current_user.present?
+    rescue Tokenable::Unauthorized
+      false
     end
 
     def current_user
       @current_user ||= user_class.find(jwt_user_id)
+    end
+
+    def require_tokenable_user!
+      raise Tokenable::Unauthorized unless user_signed_in?
     end
 
     private
@@ -27,7 +33,7 @@ module Tokenable
     end
 
     def token_from_header
-      headers['Authorization'].split(' ').last
+      headers['Authorization'].to_s.split(' ').last
     end
 
     def jwt_user_id
@@ -35,6 +41,8 @@ module Tokenable
     end
 
     def jwt
+      raise Tokenable::Unauthorized unless token_from_header.present?
+
       @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first
     end
 
