@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path("../lib", __dir__)
-require "tokenable"
+$LOAD_PATH.unshift File.expand_path('../lib', __dir__)
+require 'tokenable'
 
-require "minitest/autorun"
+require 'minitest/autorun'
