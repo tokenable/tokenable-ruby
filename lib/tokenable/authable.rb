@@ -26,7 +26,7 @@ module Tokenable
 
     def require_tokenable_user!
       raise Tokenable::Unauthorized.new('User is not signed in') unless user_signed_in?
-      raise Tokenable::Unauthorized.new('Token has been revoked') if current_user.respond_to?(:issue_revoke_token) && current_user.token_revoked?(jwt_revoke_token)
+      raise Tokenable::Unauthorized.new('Token verifier is invalid') if current_user.respond_to?(:valid_verifier?) && !current_user.valid_verifier?(jwt_verifier)
     end
 
     private
@@ -44,8 +44,8 @@ module Tokenable
         user_id: user.id,
       }
 
-      if user.respond_to?(:issue_revoke_token)
-        jwt_data[:revoke_token] = user.issue_revoke_token
+      if user.respond_to?(:issue_verifier!)
+        jwt_data[:verifier] = user.current_verifier
       end
 
       JWT.encode(jwt_data, jwt_secret, 'HS256')
@@ -55,8 +55,8 @@ module Tokenable
       jwt['user_id']
     end
 
-    def jwt_revoke_token
-      jwt['revoke_token']
+    def jwt_verifier
+      jwt['verifier']
     end
 
     def jwt

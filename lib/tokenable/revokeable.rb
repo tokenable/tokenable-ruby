@@ -2,32 +2,29 @@ module Tokenable
   module Revokable
     extend ActiveSupport::Concern
 
-    def token_revoked?(revoke_token)
-      !revoke_token.in?(revoke_tokens_hash.keys)
+    def valid_verifier?(verifier)
+      raise Tokenable::Unauthorized.new("#{verifier_key} field is missing") unless self.has_attribute?(verifier_key)
+
+      current_verifier == verifier
     end
 
-    def issue_revoke_token
-      issued_token = SecureRandom.hex
-      self.update(
-        revoke_tokens_key => revoke_tokens_hash.merge(
-          issued_token => Time.current
-        )
-      )
+    def current_verifier
+      read_attribute(verifier_key) || issue_verifier!
+    end
 
-      issued_token
+    def invalidate_tokens!
+      issue_verifier!
+    end
+
+    def issue_verifier!
+      self.update!(verifier_key => SecureRandom.uuid)
+      read_attribute(verifier_key)
     end
 
     private
 
-    def revoke_tokens_hash
-      raise Tokenable::Unauthorized.new("#{revoke_tokens_key} field is missing") unless self.has_attribute?(revoke_tokens_key)
-
-      read_attribute(revoke_tokens_key).to_h
-    end
-
-    # TODO: make a config option
-    def revoke_tokens_key
-      :revoke_tokens
+    def verifier_key
+      :tokenable_verifier
     end
   end
 end
