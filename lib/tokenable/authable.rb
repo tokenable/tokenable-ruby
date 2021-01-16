@@ -44,6 +44,8 @@ module Tokenable
       raise Tokenable::Unauthorized unless token_from_header.present?
 
       @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first
+    rescue JWT::ExpiredSignature, JWT::DecodeError
+      raise Tokenable::Unauthorized
     end
 
     def jwt_secret
