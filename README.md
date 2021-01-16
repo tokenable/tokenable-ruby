@@ -64,6 +64,24 @@ const { data } = await axios.get("https://example.com/api/user", {
 });
 ```
 
+### Revokeable Tokens
+
+Tokens can be removed by including the following in your User model
+
+```ruby
+class User < ApplicationRecord
+  include Tokenable::Revokeable
+end
+```
+
+And running the following migration
+
+```bash
+rails g migration AddRevokeTokensToUsers revoke_tokens:jsonb
+```
+
+If you clear out the revoke_tokens column for a user, all of their tokens will be invalidated.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
