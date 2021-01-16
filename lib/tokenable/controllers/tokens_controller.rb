@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Tokenable
   class TokensController < ::ActionController::API
     include Authable
 
     def create
-      user_id, _ = User.from_params(params)
+      user_id, = User.from_params(params)
       raise Tokenable::Unauthorized unless user_id
 
       token = token_from_user(user_id)
