@@ -15,7 +15,7 @@ module Tokenable
 
           return nil unless user.valid_password?(password)
 
-          [user.id, nil]
+          user
         end
 
         private

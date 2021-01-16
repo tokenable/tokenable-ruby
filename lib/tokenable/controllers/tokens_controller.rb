@@ -5,11 +5,17 @@ module Tokenable
     include Authable
 
     def create
-      user_id, = User.from_params(params)
-      raise Tokenable::Unauthorized unless user_id
+      user = User.from_params(params)
+      raise Tokenable::Unauthorized unless user
 
-      token = token_from_user(user_id)
-      render json: { data: token }, status: 201
+      response = {
+        data: {
+          token: token_from_user(user),
+          user_id: user.id
+        }
+      }
+
+      render json: response, status: 201
     end
   end
 end

@@ -10,12 +10,12 @@ module Tokenable
         def from_params(params)
           email, password = parse_auth_params(params)
 
-          user = User.select(:id, :password_digest).find_by(email: email)
+          user = User.find_by(email: email)
           return nil unless user
 
           return nil unless user.authenticate(password)
 
-          [user.id, nil]
+          user
         end
 
         private

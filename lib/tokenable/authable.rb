@@ -25,7 +25,8 @@ module Tokenable
     end
 
     def require_tokenable_user!
-      raise Tokenable::Unauthorized unless user_signed_in?
+      raise Tokenable::Unauthorized.new('User is not signed in') unless user_signed_in?
+      raise Tokenable::Unauthorized.new('Token has been revoked') if current_user.respond_to?(:issue_revoke_token) && current_user.token_revoked?(jwt_revoke_token)
     end
 
     private
@@ -35,30 +36,35 @@ module Tokenable
     end
 
     def token_from_header
-      headers['Authorization'].to_s.split(' ').last
+      request.authorization.to_s.split(' ').last
     end
 
-    def token_from_user(user_id)
+    def token_from_user(user)
       jwt_data = {
-        user_id: user_id,
+        user_id: user.id,
       }
-      jwt_token = JWT.encode(jwt_data, jwt_secret, 'HS256')
-      {
-        user_id: user_id,
-        token: jwt_token,
-      }
+
+      if user.respond_to?(:issue_revoke_token)
+        jwt_data[:revoke_token] = user.issue_revoke_token
+      end
+
+      JWT.encode(jwt_data, jwt_secret, 'HS256')
     end
 
     def jwt_user_id
-      jwt['data']['user_id']
+      jwt['user_id']
+    end
+
+    def jwt_revoke_token
+      jwt['revoke_token']
     end
 
     def jwt
-      raise Tokenable::Unauthorized unless token_from_header.present?
+      raise Tokenable::Unauthorized.new('Bearer token not provided') unless token_from_header.present?
 
       @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first
     rescue JWT::ExpiredSignature, JWT::DecodeError
-      raise Tokenable::Unauthorized
+      raise Tokenable::Unauthorized.new('JWT exception thrown')
     end
 
     def jwt_secret
