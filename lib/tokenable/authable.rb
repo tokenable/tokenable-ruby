@@ -38,6 +38,8 @@ module Tokenable
 
     def jwt_user_id
       jwt['data']['user_id']
+    rescue Tokenable::Unauthorized
+      nil
     end
 
     def jwt
