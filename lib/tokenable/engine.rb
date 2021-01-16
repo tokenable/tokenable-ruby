@@ -1,4 +1,5 @@
 require_relative 'controllers/tokens_controller'
+require_relative 'strategies/devise'
 require_relative 'strategies/secure_password'
 
 module Tokenable
