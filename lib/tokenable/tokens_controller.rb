@@ -15,8 +15,8 @@ module Tokenable
       }
       jwt_token = JWT.encode(jwt_data, jwt_secret, 'HS256')
       data = {
-        user: user,
-        value: jwt_token,
+        user_id: user.id,
+        token: jwt_token,
       }
 
       render json: { data: data }, status: 201
