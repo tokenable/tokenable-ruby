@@ -53,7 +53,15 @@ const { data } = await axios.post("https://example.com/api/auth", {
   password: "coolpassword123",
 });
 
-console.log(data.data.token);
+const token = data.data.token;
+```
+
+You then use this token in all future API requests:
+
+```js
+const { data } = await axios.get("https://example.com/api/user", {
+  headers: { Authorization: `Bearer ${token}` },
+});
 ```
 
 ## Development
