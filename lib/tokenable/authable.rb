@@ -41,30 +41,42 @@ module Tokenable
 
     def token_from_user(user)
       jwt_data = {
-        user_id: user.id,
+        data: {
+          user_id: user.id,
+        }
       }
 
+      if jwt_expiry_time
+        jwt_data[:exp] = jwt_expiry_time
+      end
+
       if user_class.included_modules.include?(Tokenable::Verifier)
-        jwt_data[:verifier] = user.current_verifier
+        jwt_data[:data][:verifier] = user.current_verifier
       end
 
       JWT.encode(jwt_data, jwt_secret, 'HS256')
     end
 
     def jwt_user_id
-      jwt['user_id']
+      jwt.dig('data', 'user_id')
     end
 
     def jwt_verifier
-      jwt['verifier']
+      jwt.dig('data', 'verifier')
     end
 
     def jwt
       raise Tokenable::Unauthorized.new('Bearer token not provided') unless token_from_header.present?
 
-      @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first
+      @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first.to_h
     rescue JWT::ExpiredSignature, JWT::DecodeError
       raise Tokenable::Unauthorized.new('JWT exception thrown')
+    end
+
+    # TODO: Make "7.days" a config option
+    def jwt_expiry_time
+      7.days.from_now.to_i
+      nil
     end
 
     def jwt_secret
