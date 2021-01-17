@@ -12,12 +12,8 @@ module Tokenable
     # The user model that we will perform actions on
     mattr_writer :user_class, default: -> { User }
 
-    def self.secret
-      self.proc_reader(:secret)
-    end
-
-    def self.user_class
-      self.proc_reader(:user_class)
+    def self.method_missing(method_name, *args, &block)
+      self.class_variable_defined?("@@#{method_name}") ? self.proc_reader(method_name) : super
     end
 
     private
