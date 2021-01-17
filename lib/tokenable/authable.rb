@@ -9,9 +9,6 @@ module Tokenable
   module Authable
     extend ActiveSupport::Concern
 
-    included do
-    end
-
     def user_signed_in?
       current_user.present?
     end
@@ -23,12 +20,22 @@ module Tokenable
     end
 
     def require_tokenable_user!
-      raise Tokenable::Unauthorized.new('User not found in JWT token') unless jwt_user_id
-      raise Tokenable::Unauthorized.new('User is not signed in') unless user_signed_in?
-      raise Tokenable::Unauthorized.new('Token verifier is invalid') if user_class.included_modules.include?(Tokenable::Verifier) && !current_user.valid_verifier?(jwt_verifier)
+      raise Tokenable::Unauthorized, 'User not found in JWT token' unless jwt_user_id
+      raise Tokenable::Unauthorized, 'User is not signed in' unless user_signed_in?
+      raise Tokenable::Unauthorized, 'Token verifier is invalid' unless valid_token?
     end
 
     private
+
+    def verifier_enabled?
+      user_class.included_modules.include?(Tokenable::Verifier)
+    end
+
+    def valid_token?
+      return true unless verifier_enabled?
+
+      current_user.valid_verifier?(jwt_verifier)
+    end
 
     def user_class
       Tokenable::Config.user_class
@@ -42,16 +49,12 @@ module Tokenable
       jwt_data = {
         data: {
           user_id: user.id,
-        }
+        },
       }
 
-      if jwt_expiry_time
-        jwt_data[:exp] = jwt_expiry_time
-      end
+      jwt_data[:exp] = jwt_expiry_time if jwt_expiry_time
 
-      if user_class.included_modules.include?(Tokenable::Verifier)
-        jwt_data[:data][:verifier] = user.current_verifier
-      end
+      jwt_data[:data][:verifier] = user.current_verifier if verifier_enabled?
 
       JWT.encode(jwt_data, jwt_secret, 'HS256')
     end
@@ -65,19 +68,19 @@ module Tokenable
     end
 
     def jwt
-      raise Tokenable::Unauthorized.new('Bearer token not provided') unless token_from_header.present?
+      raise Tokenable::Unauthorized, 'Bearer token not provided' unless token_from_header.present?
 
       @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first.to_h
     rescue JWT::ExpiredSignature
-      raise Tokenable::Unauthorized.new('Token has expired')
+      raise Tokenable::Unauthorized, 'Token has expired'
     rescue JWT::VerificationError
-      raise Tokenable::Unauthorized.new('The tokenable secret used in this token does not match the one supplied in Tokenable::Config.secret')
+      raise Tokenable::Unauthorized, 'The tokenable secret used in this token does not match the one supplied in Tokenable::Config.secret'
     rescue JWT::DecodeError
-      raise Tokenable::Unauthorized.new('JWT exception thrown')
+      raise Tokenable::Unauthorized, 'JWT exception thrown'
     end
 
     def jwt_expiry_time
-      Tokenable::Config.lifespan
+      Tokenable::Config.lifespan ? Tokenable::Config.lifespan.from_now.to_i : nil
     end
 
     def jwt_secret

@@ -11,8 +11,8 @@ module Tokenable
       response = {
         data: {
           token: token_from_user(user),
-          user_id: user.id
-        }
+          user_id: user.id,
+        },
       }
 
       render json: response, status: 201
