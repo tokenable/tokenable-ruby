@@ -73,10 +73,14 @@ You can now invalidate all tokens by calling `user.invalidate_tokens!`.
 
 ### Token Expiry
 
-By default, tokens will live forever. If you want to change this, you can set a config option (see below for how to set that up).
+By default, tokens expire after 7 days. If you want to change this, you can set a config option.
 
 ```ruby
+# Expire in 7 days (default)
 Tokenable::Config.lifespan = 7.days
+
+# Tokens will never expire
+Tokenable::Config.lifespan = nil
 ```
 
 ### Example Usage
