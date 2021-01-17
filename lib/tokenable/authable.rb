@@ -73,14 +73,12 @@ module Tokenable
       raise Tokenable::Unauthorized.new('JWT exception thrown')
     end
 
-    # TODO: Make "7.days" a config option
     def jwt_expiry_time
-      7.days.from_now.to_i
-      nil
+      Tokenable.lifespan ? Tokenable.lifespan.from_now.to_i : nil
     end
 
     def jwt_secret
-      Rails.application.secret_key_base
+      Tokenable.secret.is_a?(Proc) ? Tokenable.secret.call : Tokenable.secret
     end
   end
 end
