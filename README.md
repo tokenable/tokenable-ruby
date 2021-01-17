@@ -1,8 +1,8 @@
 # Tokenable
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tokenable`. To experiment with that code, run `bin/console` for an interactive prompt.
+Tokenable is a gem for Rails to enable the ability for API applications to provide Authentication.
 
-TODO: Delete this and the text above, and describe your gem
+This allows you to provide authentication to mobile apps, or SPAs with ease.
 
 ## Installation
 
@@ -14,21 +14,19 @@ gem 'tokenable'
 
 And then execute:
 
-    bundle install
-
-Or install it yourself as:
-
-    gem install tokenable
+```
+bundle install
+```
 
 ## Usage
 
-In your `routes.rb`, please add:
+In your `config/routes.rb`, please add:
 
 ```ruby
 mount Tokenable::Engine => '/api/auth'
 ```
 
-And in your `User` model, please add an Auth strategy, such as:
+And in your `User` model, please add an Auth Strategy. For example, if you are using `has_secure_password`, then you could use:
 
 ```ruby
 class User < ApplicationRecord
@@ -43,7 +41,17 @@ You can chose from:
 - `Tokenable::Strategies::SecurePassword`
 - `Tokenable::Strategies::Devise`
 
-You can also create your own stragery. (TODO: link to docs on this)
+You can also create your own stragery. This is as simple as creating a method on the User object.
+
+```ruby
+def self.from_params(params)
+  user = User.find_by(something: params[:something])
+  return nil unless user.present?
+  
+  return nil unless user.password_valid?(params[:password])
+  user
+end
+```
 
 Once you have this setup, you can login. For example, you could login using `axios` in JavaScript:
 
