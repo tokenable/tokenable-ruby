@@ -17,19 +17,20 @@ module Tokenable
       end
 
       def setup_statergy
-
-        strategies = Dir.entries(File.expand_path('../../tokenable/strategies', __dir__))
-                        .reject{|f| File.directory?(f) }
-                        .map{|f| File.basename(f, File.extname(f)) }
-
-        if options.strategy.in?(strategies)
+        if options.strategy.in?(list_of_strategies)
           strategy_class = options.strategy.classify
-
           inject_into_file "app/models/#{file_name}.rb", "  include Tokenable::Strategies::#{strategy_class}\n", after: " < ApplicationRecord\n"
         else
-          say "#{options.strategy} => #{strategies}"
           say 'Stargery not found'
         end
+      end
+
+      private
+
+      def list_of_strategies
+        Dir.entries(File.expand_path('../../tokenable/strategies', __dir__))
+           .reject { |f| File.directory?(f) }
+           .map { |f| File.basename(f, File.extname(f)) }
       end
     end
   end
