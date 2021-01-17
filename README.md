@@ -59,18 +59,16 @@ end
 
 ### Invalidate Tokens
 
-If you want to be able to invalidate tokens from the server, then you can add `Tokenable::Verifier`.
+Sometime you want to be able to force a user (or users) to login again. You can do this by adding the Verifier. To install this, run:
 
-```ruby
-class User < ApplicationRecord
-  include Tokenable::Verifier
-end
+```
+rails generate tokenable:verifier
 ```
 
-And running the following migration:
+And then run your migrations:
 
-```bash
-rails g migration AddTokenableVerifierToUsers tokenable_verifier:string
+```
+rails db:migrate
 ```
 
 You can now invalidate all tokens by calling `user.invalidate_tokens!`.
