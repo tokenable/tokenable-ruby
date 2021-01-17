@@ -28,15 +28,13 @@ Once you have the gem installed, lets get it setup:
 rails generate tokenable:install User --strategy=devise
 ```
 
-We make it easier for you, by adding out of the box support for some auth libraries. You can pick from the following options for `--strategy`, or leave it empty for a custom one (see below):
+We make it easier for you, by adding out of the box support for some auth libraries. You can pick from the following options for `--strategy`, or leave it empty for a [custom strategy](https://github.com/tokenable/tokenable-ruby/wiki/Create-your-own-statergy):
 
 - [devise](https://github.com/heartcombo/devise)
 - [sorcery](https://github.com/Sorcery/sorcery)
 - [secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html)
 
 This will add a route, the configuration file at `config/initializers/tokenable.rb`, and add the required includes to your User model. There are no migrations to run in the default configuration.
-
-You can also [create your own stragery](https://github.com/tokenable/tokenable-ruby/wiki/Create-your-own-statergy).
 
 ### Controllers
 
