@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Tokenable
   class Config
     # How long should the token last before it expires?
@@ -15,13 +17,15 @@ module Tokenable
     # We do this, as some of our defaults need to live in a Proc (as this library is loaded before Rails)
     # This means we can return the value when the method is called, instead of the Proc.
     def self.method_missing(method_name, *args, &block)
-      self.class_variable_defined?("@@#{method_name}") ? self.proc_reader(method_name) : super
+      class_variable_defined?("@@#{method_name}") ? proc_reader(method_name) : super
     end
 
-    private
+    def self.respond_to_missing?(method_name, include_private = false)
+      class_variable_defined?("@@#{method_name}") || super
+    end
 
     def self.proc_reader(key)
-      value = self.class_variable_get("@@#{key}")
+      value = class_variable_get("@@#{key}")
       value.is_a?(Proc) ? value.call : value
     end
   end

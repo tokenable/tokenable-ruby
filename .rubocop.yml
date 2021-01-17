@@ -19,4 +19,4 @@ Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
 Layout/LineLength:
-  Max: 120
+  Max: 150
