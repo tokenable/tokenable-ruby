@@ -14,8 +14,6 @@ module Tokenable
 
     def user_signed_in?
       current_user.present?
-    rescue Tokenable::Unauthorized
-      false
     end
 
     def current_user
@@ -25,6 +23,7 @@ module Tokenable
     end
 
     def require_tokenable_user!
+      raise Tokenable::Unauthorized.new('User not found in JWT token') unless jwt_user_id
       raise Tokenable::Unauthorized.new('User is not signed in') unless user_signed_in?
       raise Tokenable::Unauthorized.new('Token verifier is invalid') if user_class.included_modules.include?(Tokenable::Verifier) && !current_user.valid_verifier?(jwt_verifier)
     end
@@ -41,34 +40,48 @@ module Tokenable
 
     def token_from_user(user)
       jwt_data = {
-        user_id: user.id,
+        data: {
+          user_id: user.id,
+        }
       }
 
+      if jwt_expiry_time
+        jwt_data[:exp] = jwt_expiry_time
+      end
+
       if user_class.included_modules.include?(Tokenable::Verifier)
-        jwt_data[:verifier] = user.current_verifier
+        jwt_data[:data][:verifier] = user.current_verifier
       end
 
       JWT.encode(jwt_data, jwt_secret, 'HS256')
     end
 
     def jwt_user_id
-      jwt['user_id']
+      jwt.dig('data', 'user_id')
     end
 
     def jwt_verifier
-      jwt['verifier']
+      jwt.dig('data', 'verifier')
     end
 
     def jwt
       raise Tokenable::Unauthorized.new('Bearer token not provided') unless token_from_header.present?
 
-      @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first
-    rescue JWT::ExpiredSignature, JWT::DecodeError
+      @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first.to_h
+    rescue JWT::ExpiredSignature
+      raise Tokenable::Unauthorized.new('Token has expired')
+    rescue JWT::VerificationError
+      raise Tokenable::Unauthorized.new('The tokenable secret used in this token does not match the one supplied in Tokenable.secret')
+    rescue JWT::DecodeError
       raise Tokenable::Unauthorized.new('JWT exception thrown')
     end
 
+    def jwt_expiry_time
+      Tokenable.lifespan ? Tokenable.lifespan.from_now.to_i : nil
+    end
+
     def jwt_secret
-      Rails.application.secret_key_base
+      Tokenable.secret.is_a?(Proc) ? Tokenable.secret.call : Tokenable.secret
     end
   end
 end

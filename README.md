@@ -54,12 +54,13 @@ const { data } = await axios.post("https://example.com/api/auth", {
 });
 
 const token = data.data.token;
+const user_id = data.data.user_id;
 ```
 
 You then use this token in all future API requests:
 
 ```js
-const { data } = await axios.get("https://example.com/api/user", {
+const { data } = await axios.get(`https://example.com/api/user/${user_id}`, {
   headers: { Authorization: `Bearer ${token}` },
 });
 ```
@@ -81,6 +82,22 @@ rails g migration AddTokenableVerifierToUsers tokenable_verifier:uuid
 ```
 
 You can now invalidate all tokens by calling `user.invalidate_tokens!`.
+
+### Configuration Options
+
+Tokenable works out of the box, with no config required, however you can tweak the following settings, by creating `config/initializers/tokenable.rb` file:
+
+```ruby
+# The secret used to create these tokens. This is then used to verify the
+# token is valid. Note: Tokens are not encrypted, and container the user_id.
+# Default: Rails.application.secret_key_base
+Tokenable.secret = 'a-256-bit-string'
+
+# How long should these tokens be valid for? After this, they will
+# be rejected with `Tokenable::Unauthorized`.
+# Default: nil
+Tokenable.lifespan = 7.days
+```
 
 ## Development
 
