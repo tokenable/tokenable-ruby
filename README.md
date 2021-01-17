@@ -25,7 +25,7 @@ bundle install
 Once you have the gem installed, lets get it setup:
 
 ```bash
-rails generate tokenable:install User --statergy=devise
+rails generate tokenable:install User --strategy=devise
 ```
 
 We make it easier for you, by adding out of the box support for some auth libraries. You can pick from the following options for `--strategy`, or leave it empty for a custom one (see below):

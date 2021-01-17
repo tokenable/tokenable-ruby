@@ -16,7 +16,7 @@ module Tokenable
         route "mount Tokenable::Engine => '/api/auth'"
       end
 
-      def setup_statergy
+      def setup_strategy
         return unless options.strategy
 
         if options.strategy.in?(list_of_strategies)
