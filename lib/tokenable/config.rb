@@ -12,6 +12,8 @@ module Tokenable
     # The user model that we will perform actions on
     mattr_writer :user_class, default: -> { User }
 
+    # We do this, as some of our defaults need to live in a Proc (as this library is loaded before Rails)
+    # This means we can return the value when the method is called, instead of the Proc.
     def self.method_missing(method_name, *args, &block)
       self.class_variable_defined?("@@#{method_name}") ? self.proc_reader(method_name) : super
     end
