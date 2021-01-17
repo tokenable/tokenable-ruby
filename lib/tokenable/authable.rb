@@ -68,7 +68,11 @@ module Tokenable
       raise Tokenable::Unauthorized.new('Bearer token not provided') unless token_from_header.present?
 
       @jwt ||= JWT.decode(token_from_header, jwt_secret, true, { algorithm: 'HS256' }).first.to_h
-    rescue JWT::ExpiredSignature, JWT::DecodeError
+    rescue JWT::ExpiredSignature
+      raise Tokenable::Unauthorized.new('Token has expired')
+    rescue JWT::VerificationError
+      raise Tokenable::Unauthorized.new('The tokenable secret used in this token does not match the one supplied in Tokenable.secret')
+    rescue JWT::DecodeError
       raise Tokenable::Unauthorized.new('JWT exception thrown')
     end
 
