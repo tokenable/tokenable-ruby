@@ -17,13 +17,13 @@ module Tokenable
       end
 
       def setup_statergy
-        if options.strategy
-          if options.strategy.in?(list_of_strategies)
-            strategy_class = options.strategy.classify
-            inject_into_file "app/models/#{file_name}.rb", "  include Tokenable::Strategies::#{strategy_class}\n", after: " < ApplicationRecord\n"
-          else
-            say "Stargery not found (#{options.strategy}). Available: #{list_of_strategies.join(', ')}"
-          end
+        return unless options.strategy
+
+        if options.strategy.in?(list_of_strategies)
+          strategy_class = options.strategy.classify
+          inject_into_file "app/models/#{file_name}.rb", "  include Tokenable::Strategies::#{strategy_class}\n", after: " < ApplicationRecord\n"
+        else
+          say "Stargery not found (#{options.strategy}). Available: #{list_of_strategies.join(", ")}"
         end
       end
 
