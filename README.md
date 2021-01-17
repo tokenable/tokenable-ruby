@@ -76,7 +76,7 @@ You can now invalidate all tokens by calling `user.invalidate_tokens!`.
 By default, tokens will live forever. If you want to change this, you can set a config option (see below for how to set that up).
 
 ```ruby
-Tokenable.lifespan = 7.days
+Tokenable::Config.lifespan = 7.days
 ```
 
 ### Configuration Options
@@ -87,7 +87,7 @@ Tokenable works out of the box, with no config required, however you can tweak t
 # The secret used to create these tokens. This is then used to verify the
 # token is valid. Note: Tokens are not encrypted, and container the user_id.
 # Default: Rails.application.secret_key_base
-Tokenable.secret = 'a-256-bit-string'
+Tokenable::Config.secret = 'a-256-bit-string'
 ```
 
 ### Example Usage

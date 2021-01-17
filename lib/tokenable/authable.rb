@@ -31,7 +31,7 @@ module Tokenable
     private
 
     def user_class
-      User
+      Tokenable::Config.user_class
     end
 
     def token_from_header
@@ -77,11 +77,11 @@ module Tokenable
     end
 
     def jwt_expiry_time
-      Tokenable.lifespan ? Tokenable.lifespan.from_now.to_i : nil
+      Tokenable::Config.lifespan
     end
 
     def jwt_secret
-      Tokenable.secret.is_a?(Proc) ? Tokenable.secret.call : Tokenable.secret
+      Tokenable::Config.secret
     end
   end
 end
