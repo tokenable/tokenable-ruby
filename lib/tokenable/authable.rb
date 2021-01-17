@@ -71,7 +71,7 @@ module Tokenable
     rescue JWT::ExpiredSignature
       raise Tokenable::Unauthorized.new('Token has expired')
     rescue JWT::VerificationError
-      raise Tokenable::Unauthorized.new('The tokenable secret used in this token does not match the one supplied in Tokenable.secret')
+      raise Tokenable::Unauthorized.new('The tokenable secret used in this token does not match the one supplied in Tokenable::Config.secret')
     rescue JWT::DecodeError
       raise Tokenable::Unauthorized.new('JWT exception thrown')
     end
