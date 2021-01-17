@@ -12,7 +12,14 @@ module Tokenable
       end
 
       def add_to_model
-        inject_into_file "app/models/#{file_name}.rb", "  include Tokenable::Verifier\n", after: " < ApplicationRecord\n"
+        model_path = "app/models/#{file_name}.rb"
+        already_injected = File.open(File.join(destination_root, model_path)).grep(/Tokenable::Verifier/).any?
+
+        if already_injected
+          say_status :skip, 'verifier is already in this model', :yellow
+        else
+          inject_into_file "app/models/#{file_name}.rb", "  include Tokenable::Verifier\n", after: " < ApplicationRecord\n"
+        end
       end
 
       def add_migration
