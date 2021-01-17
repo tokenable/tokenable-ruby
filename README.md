@@ -66,7 +66,7 @@ end
 And running the following migration:
 
 ```bash
-rails g migration AddTokenableVerifierToUsers tokenable_verifier:uuid
+rails g migration AddTokenableVerifierToUsers tokenable_verifier:string
 ```
 
 You can now invalidate all tokens by calling `user.invalidate_tokens!`.
