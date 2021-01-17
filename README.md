@@ -11,7 +11,7 @@ This allows you to provide authentication to mobile apps, or SPAs with ease.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'tokenable'
+gem 'tokenable-ruby'
 ```
 
 And then execute:
