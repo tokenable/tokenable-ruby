@@ -83,20 +83,23 @@ rails g migration AddTokenableVerifierToUsers tokenable_verifier:uuid
 
 You can now invalidate all tokens by calling `user.invalidate_tokens!`.
 
+### Token Expiry
+
+By default, tokens will live forever. If you want to change this, you can set a config option (see below for how to set that up).
+
+```ruby
+Tokenable.lifespan = 7.days
+```
+
 ### Configuration Options
 
-Tokenable works out of the box, with no config required, however you can tweak the following settings, by creating `config/initializers/tokenable.rb` file:
+Tokenable works out of the box, with no config required, however you can tweak the settings, by creating `config/initializers/tokenable.rb` file.
 
 ```ruby
 # The secret used to create these tokens. This is then used to verify the
 # token is valid. Note: Tokens are not encrypted, and container the user_id.
 # Default: Rails.application.secret_key_base
 Tokenable.secret = 'a-256-bit-string'
-
-# How long should these tokens be valid for? After this, they will
-# be rejected with `Tokenable::Unauthorized`.
-# Default: nil
-Tokenable.lifespan = 7.days
 ```
 
 ## Development
