@@ -6,16 +6,15 @@ module Tokenable
       extend ActiveSupport::Concern
 
       class_methods do
-        # @return [string, nil] Returns user_id + revocation key (not used yet)
-        def from_params(params)
+        def from_tokenable_params(params)
           email, password = parse_auth_params(params)
 
-          user = User.select(:id, :password_digest).find_by(email: email)
+          user = User.find_by(email: email)
           return nil unless user
 
           return nil unless user.authenticate(password)
 
-          [user.id, nil]
+          user
         end
 
         private

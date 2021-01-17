@@ -44,14 +44,53 @@ You can chose from:
 You can also create your own stragery. This is as simple as creating a method on the User object.
 
 ```ruby
-def self.from_params(params)
+def self.from_tokenable_params(params)
   user = User.find_by(something: params[:something])
   return nil unless user.present?
-  
+
   return nil unless user.password_valid?(params[:password])
   user
 end
 ```
+
+### Invalidate Tokens
+
+If you want to be able to invalidate tokens from the server, then you can add `Tokenable::Verifier`.
+
+```ruby
+class User < ApplicationRecord
+  include Tokenable::Verifier
+end
+```
+
+And running the following migration:
+
+```bash
+rails g migration AddTokenableVerifierToUsers tokenable_verifier:string
+```
+
+You can now invalidate all tokens by calling `user.invalidate_tokens!`.
+
+### Token Expiry
+
+By default, tokens will live forever. If you want to change this, you can set a config option (see below for how to set that up).
+
+```ruby
+Tokenable::Config.lifespan = 7.days
+```
+
+### Configuration Options
+
+Tokenable works out of the box, with no config required, however you can tweak the settings, by creating `config/initializers/tokenable.rb` file.
+
+```ruby
+# The secret used to create these tokens. This is then used to verify the
+# token is valid. Note: Tokens are not encrypted, and container the user_id.
+# Default: Rails.application.secret_key_base
+Tokenable::Config.secret = 'a-256-bit-string'
+```
+
+### Example Usage
 
 Once you have this setup, you can login. For example, you could login using `axios` in JavaScript:
 
@@ -62,12 +101,13 @@ const { data } = await axios.post("https://example.com/api/auth", {
 });
 
 const token = data.data.token;
+const user_id = data.data.user_id;
 ```
 
 You then use this token in all future API requests:
 
 ```js
-const { data } = await axios.get("https://example.com/api/user", {
+const { data } = await axios.get(`https://example.com/api/user/${user_id}`, {
   headers: { Authorization: `Bearer ${token}` },
 });
 ```
