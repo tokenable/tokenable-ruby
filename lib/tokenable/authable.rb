@@ -23,6 +23,7 @@ module Tokenable
     end
 
     def require_tokenable_user!
+      raise Tokenable::Unauthorized.new('User not found in JWT token') unless jwt_user_id
       raise Tokenable::Unauthorized.new('User is not signed in') unless user_signed_in?
       raise Tokenable::Unauthorized.new('Token verifier is invalid') if user_class.included_modules.include?(Tokenable::Verifier) && !current_user.valid_verifier?(jwt_verifier)
     end
