@@ -1,6 +1,8 @@
 # Tokenable
 
 ![Test](https://github.com/tokenable/tokenable-ruby/workflows/Test/badge.svg)
+![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
+![Project Status: WIP – Development is in progress](https://www.repostatus.org/badges/latest/wip.svg)
 
 Tokenable is a Rails gem that allows API-only applications a way to authenticate users. This can be helpful when building Single Page Applications, or Mobile Applications.
 
