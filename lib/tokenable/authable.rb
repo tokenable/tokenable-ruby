@@ -14,8 +14,6 @@ module Tokenable
 
     def user_signed_in?
       current_user.present?
-    rescue Tokenable::Unauthorized
-      false
     end
 
     def current_user
