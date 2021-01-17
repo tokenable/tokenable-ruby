@@ -38,6 +38,8 @@ This will add a route, the configuration file at `config/initializers/tokenable.
 You can also create your own stragery. This is as simple as adding a method to your User model.
 
 ```ruby
+# The params are passed directly from a controller, so you can do anything with
+# them that you normally would within a controller.
 def self.from_tokenable_params(params)
   user = User.find_by(something: params[:something])
   return nil unless user.present?
