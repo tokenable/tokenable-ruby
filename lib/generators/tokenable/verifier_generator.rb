@@ -16,7 +16,7 @@ module Tokenable
       end
 
       def add_migration
-        migration_template 'verifier_migration.rb.erb', 'db/migrate/add_tokenable_verifier.rb'
+        migration_template 'verifier_migration.rb.erb', "db/migrate/add_tokenable_verifier_to_#{table_name}.rb"
       end
 
       private
