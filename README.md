@@ -47,30 +47,10 @@ You can also create your own stragery. This is as simple as creating a method on
 def self.from_params(params)
   user = User.find_by(something: params[:something])
   return nil unless user.present?
-  
+
   return nil unless user.password_valid?(params[:password])
   user
 end
-```
-
-Once you have this setup, you can login. For example, you could login using `axios` in JavaScript:
-
-```js
-const { data } = await axios.post("https://example.com/api/auth", {
-  email: "email@example.com",
-  password: "coolpassword123",
-});
-
-const token = data.data.token;
-const user_id = data.data.user_id;
-```
-
-You then use this token in all future API requests:
-
-```js
-const { data } = await axios.get(`https://example.com/api/user/${user_id}`, {
-  headers: { Authorization: `Bearer ${token}` },
-});
 ```
 
 ### Invalidate Tokens
@@ -108,6 +88,28 @@ Tokenable works out of the box, with no config required, however you can tweak t
 # token is valid. Note: Tokens are not encrypted, and container the user_id.
 # Default: Rails.application.secret_key_base
 Tokenable.secret = 'a-256-bit-string'
+```
+
+### Example Usage
+
+Once you have this setup, you can login. For example, you could login using `axios` in JavaScript:
+
+```js
+const { data } = await axios.post("https://example.com/api/auth", {
+  email: "email@example.com",
+  password: "coolpassword123",
+});
+
+const token = data.data.token;
+const user_id = data.data.user_id;
+```
+
+You then use this token in all future API requests:
+
+```js
+const { data } = await axios.get(`https://example.com/api/user/${user_id}`, {
+  headers: { Authorization: `Bearer ${token}` },
+});
 ```
 
 ## Development
