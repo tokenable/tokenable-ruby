@@ -44,7 +44,7 @@ You can chose from:
 You can also create your own stragery. This is as simple as creating a method on the User object.
 
 ```ruby
-def self.from_params(params)
+def self.from_tokenable_params(params)
   user = User.find_by(something: params[:something])
   return nil unless user.present?
 

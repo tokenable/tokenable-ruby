@@ -6,8 +6,7 @@ module Tokenable
       extend ActiveSupport::Concern
 
       class_methods do
-        # @return [User] Returns the user object
-        def from_params(params)
+        def from_tokenable_params(params)
           email, password = parse_auth_params(params)
 
           user = User.find_by(email: email)

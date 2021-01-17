@@ -5,7 +5,7 @@ module Tokenable
     include Authable
 
     def create
-      user = User.from_params(params)
+      user = User.from_tokenable_params(params)
       raise Tokenable::Unauthorized unless user
 
       response = {
