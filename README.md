@@ -22,13 +22,15 @@ bundle install
 
 ## Usage
 
-In your `config/routes.rb`, please add:
+Once you have the gem installed, lets get it setup:
 
-```ruby
-mount Tokenable::Engine => '/api/auth'
+```bash
+rails generate tokenable:install
 ```
 
-And in your `User` model, please add an Auth Strategy. For example, if you are using `has_secure_password`, then you could use:
+This will add a route, and also the configuration file at `config/initializers/tokenable.rb`.
+
+Next, in your `User` model, please add a Auth Strategy. For example, if you are using `has_secure_password`, then you could use:
 
 ```ruby
 class User < ApplicationRecord
@@ -79,17 +81,6 @@ By default, tokens will live forever. If you want to change this, you can set a 
 
 ```ruby
 Tokenable::Config.lifespan = 7.days
-```
-
-### Configuration Options
-
-Tokenable works out of the box, with no config required, however you can tweak the settings, by creating `config/initializers/tokenable.rb` file.
-
-```ruby
-# The secret used to create these tokens. This is then used to verify the
-# token is valid. Note: Tokens are not encrypted, and container the user_id.
-# Default: Rails.application.secret_key_base
-Tokenable::Config.secret = 'a-256-bit-string'
 ```
 
 ### Example Usage
