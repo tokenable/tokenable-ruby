@@ -9,7 +9,7 @@ module Tokenable
         def from_tokenable_params(params)
           email, password = parse_auth_params(params)
 
-          user = User.find_by(email: email)
+          user = Tokenable::Config.user_class.find_by(email: email)
           return nil unless user
 
           return nil unless user.valid_password?(password)
