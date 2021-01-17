@@ -20,3 +20,9 @@ Style/TrailingCommaInHashLiteral:
 
 Layout/LineLength:
   Max: 150
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false

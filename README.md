@@ -22,30 +22,24 @@ bundle install
 
 ## Usage
 
-In your `config/routes.rb`, please add:
+Once you have the gem installed, lets get it setup:
 
-```ruby
-mount Tokenable::Engine => '/api/auth'
+```bash
+rails generate tokenable:install User --strategy=devise
 ```
 
-And in your `User` model, please add an Auth Strategy. For example, if you are using `has_secure_password`, then you could use:
+We make it easier for you, by adding out of the box support for some auth libraries. You can pick from the following options for `--strategy`, or leave it empty for a custom one (see below):
+
+- [devise](https://github.com/heartcombo/devise)
+- [secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html)
+
+This will add a route, the configuration file at `config/initializers/tokenable.rb`, and add the required includes to your User model. There are no migrations to run in the default configuration.
+
+You can also create your own stragery. This is as simple as adding a method to your User model.
 
 ```ruby
-class User < ApplicationRecord
-  include Tokenable::Strategies::SecurePassword
-
-  has_secure_password
-end
-```
-
-You can chose from:
-
-- `Tokenable::Strategies::SecurePassword`
-- `Tokenable::Strategies::Devise`
-
-You can also create your own stragery. This is as simple as creating a method on the User object.
-
-```ruby
+# The params are passed directly from a controller, so you can do anything with
+# them that you normally would within a controller.
 def self.from_tokenable_params(params)
   user = User.find_by(something: params[:something])
   return nil unless user.present?
@@ -57,18 +51,16 @@ end
 
 ### Invalidate Tokens
 
-If you want to be able to invalidate tokens from the server, then you can add `Tokenable::Verifier`.
+Sometime you want to be able to force a user (or users) to login again. You can do this by adding the Verifier. To install this, run:
 
-```ruby
-class User < ApplicationRecord
-  include Tokenable::Verifier
-end
+```
+rails generate tokenable:verifier User
 ```
 
-And running the following migration:
+And then run your migrations:
 
-```bash
-rails g migration AddTokenableVerifierToUsers tokenable_verifier:string
+```
+rails db:migrate
 ```
 
 You can now invalidate all tokens by calling `user.invalidate_tokens!`.
@@ -79,17 +71,6 @@ By default, tokens will live forever. If you want to change this, you can set a 
 
 ```ruby
 Tokenable::Config.lifespan = 7.days
-```
-
-### Configuration Options
-
-Tokenable works out of the box, with no config required, however you can tweak the settings, by creating `config/initializers/tokenable.rb` file.
-
-```ruby
-# The secret used to create these tokens. This is then used to verify the
-# token is valid. Note: Tokens are not encrypted, and container the user_id.
-# Default: Rails.application.secret_key_base
-Tokenable::Config.secret = 'a-256-bit-string'
 ```
 
 ### Example Usage
