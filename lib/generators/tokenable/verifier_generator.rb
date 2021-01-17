@@ -8,7 +8,7 @@ module Tokenable
       source_root File.expand_path('../templates', __dir__)
 
       def generate_model
-        invoke "active_record:model", [name], migration: false unless model_exists? && behavior == :invoke
+        invoke 'active_record:model', [name], migration: false unless model_exists? && behavior == :invoke
       end
 
       def add_to_model
@@ -16,7 +16,7 @@ module Tokenable
       end
 
       def add_migration
-        migration_template "verifier_migration.rb", "db/migrate/add_tokenable_verifier.rb"
+        migration_template 'verifier_migration.rb.erb', 'db/migrate/add_tokenable_verifier.rb'
       end
 
       private
@@ -26,10 +26,8 @@ module Tokenable
       end
 
       def migration_version
-       if Rails::VERSION::MAJOR >= 5
-         "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-       end
-     end
+        "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]" if Rails::VERSION::MAJOR >= 5
+      end
     end
   end
 end
