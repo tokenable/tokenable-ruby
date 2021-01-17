@@ -25,27 +25,17 @@ bundle install
 Once you have the gem installed, lets get it setup:
 
 ```bash
-rails generate tokenable:install
+rails generate tokenable:install User --statergy=devise
 ```
 
-This will add a route, and also the configuration file at `config/initializers/tokenable.rb`.
+We make it easier for you, by adding out of the box support for some auth libraries. You can pick from the following options for `--strategy`, or leave it empty for a custom one (see below):
 
-Next, in your `User` model, please add a Auth Strategy. For example, if you are using `has_secure_password`, then you could use:
+- [devise](https://github.com/heartcombo/devise)
+- [secure_password](https://api.rubyonrails.org/classes/ActiveModel/SecurePassword/ClassMethods.html)
 
-```ruby
-class User < ApplicationRecord
-  include Tokenable::Strategies::SecurePassword
+This will add a route, the configuration file at `config/initializers/tokenable.rb`, and add the required includes to your User model. There are no migrations to run in the default configuration.
 
-  has_secure_password
-end
-```
-
-You can chose from:
-
-- `Tokenable::Strategies::SecurePassword`
-- `Tokenable::Strategies::Devise`
-
-You can also create your own stragery. This is as simple as creating a method on the User object.
+You can also create your own stragery. This is as simple as adding a method to your User model.
 
 ```ruby
 def self.from_tokenable_params(params)
@@ -62,7 +52,7 @@ end
 Sometime you want to be able to force a user (or users) to login again. You can do this by adding the Verifier. To install this, run:
 
 ```
-rails generate tokenable:verifier
+rails generate tokenable:verifier User
 ```
 
 And then run your migrations:
