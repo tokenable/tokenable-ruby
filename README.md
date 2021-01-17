@@ -1,5 +1,7 @@
 # Tokenable
 
+![Test](https://github.com/tokenable/tokenable-ruby/workflows/Test/badge.svg)
+
 Tokenable is a gem for Rails to enable the ability for API applications to provide Authentication.
 
 This allows you to provide authentication to mobile apps, or SPAs with ease.
