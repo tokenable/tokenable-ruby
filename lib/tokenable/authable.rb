@@ -42,7 +42,7 @@ module Tokenable
     end
 
     def token_from_header
-      request.authorization.to_s.split(' ').last
+      request.authorization.to_s.split.last
     end
 
     def token_from_user(user)

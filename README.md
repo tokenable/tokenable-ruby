@@ -1,6 +1,7 @@
 # Tokenable
 
 ![Tests](https://github.com/tokenable/tokenable-ruby/workflows/Tests/badge.svg)
+[![codecov](https://codecov.io/gh/tokenable/tokenable-ruby/branch/main/graph/badge.svg?token=URF456H8RI)](https://codecov.io/gh/tokenable/tokenable-ruby)
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 ![Project Status: WIP – Development is in progress](https://www.repostatus.org/badges/latest/wip.svg)
 

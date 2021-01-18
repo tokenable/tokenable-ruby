@@ -1,5 +1,12 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.5
+  Exclude:
+    - "spec/dummy/**/*"
 
 Style/Documentation:
   Enabled: false
@@ -25,4 +32,10 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/MethodLength:
+  Enabled: false
+
+Style/ClassVars:
+  Enabled: false
+
+RSpec/MultipleExpectations:
   Enabled: false
