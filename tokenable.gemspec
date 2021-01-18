@@ -29,14 +29,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'jwt', '~> 2.2', '< 3'
   spec.add_dependency 'rails', '~> 6.0', '< 6.2'
-
-  # Testing
-  spec.add_development_dependency 'database_cleaner-active_record'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec-rails'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'rubocop-rake'
-  spec.add_development_dependency 'rubocop-rspec'
-  spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'sqlite3'
 end

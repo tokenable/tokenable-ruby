@@ -5,6 +5,11 @@ SimpleCov.start 'rails' do
   add_filter 'spec/dummy'
 end
 
+if ENV['CI']
+  require 'codecov'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+end
+
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../spec/dummy/config/environment.rb', __dir__)
