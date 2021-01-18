@@ -17,6 +17,6 @@ group :test do
   gem 'rubocop-rails', '2.9.1'
   gem 'rubocop-rake', '0.5.1'
   gem 'rubocop-rspec', '2.1.0'
-  gem 'simplecov', '0.20'
+  gem 'simplecov', '~> 0.2'
   gem 'sqlite3', '1.4.2'
 end
