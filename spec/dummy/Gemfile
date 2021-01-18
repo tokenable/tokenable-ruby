@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+gem 'tokenable', path: '../../'
+
 gem 'rails'
 gem 'sqlite3'
-gem 'tokenable', path: '../../'
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
