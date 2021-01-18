@@ -13,6 +13,4 @@ jobs:
           ruby-version: 2.7
           bundler-cache: true
 
-      - run: gem install bundler -v 2.2.4
-      - run: bundle install
       - run: bundle exec rubocop

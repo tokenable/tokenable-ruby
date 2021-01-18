@@ -18,9 +18,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
 
-      - run: gem install bundler -v 2.2.4
-      - run: bundle install
-
+      - run: cd spec/dummy && bundle install
       - run: cd spec/dummy && bundle exec rails db:create db:migrate
         env:
           RAILS_ENV: test
