@@ -34,8 +34,18 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+
 Style/ClassVars:
   Enabled: false
 
 RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ImplicitBlockExpectation:
+  Enabled: false
+
+RSpec/DescribedClass:
   Enabled: false
