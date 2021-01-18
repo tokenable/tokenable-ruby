@@ -1,7 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.5
   Exclude:
-    - "spec/dummy"
+    - "spec/dummy/**/*"
 
 Style/Documentation:
   Enabled: false
