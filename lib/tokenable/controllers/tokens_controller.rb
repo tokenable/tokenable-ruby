@@ -6,7 +6,7 @@ module Tokenable
 
     def create
       user = Tokenable::Config.user_class.from_tokenable_params(params)
-      raise Tokenable::Unauthorized unless user
+      raise Tokenable::Unauthorized, 'No user returned by strategy' unless user
 
       response = {
         data: {

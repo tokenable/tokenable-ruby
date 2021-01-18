@@ -8,6 +8,7 @@ AllCops:
   Exclude:
     - "spec/dummy/**/*"
     - "vendor/**/*"
+    - "tmp/**/*"
 
 Style/Documentation:
   Enabled: false
@@ -30,6 +31,9 @@ Layout/LineLength:
   Max: 150
   Exclude:
     - "spec/**/*"
+
+Lint/EmptyBlock:
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false
@@ -60,4 +64,10 @@ RSpec/MessageSpies:
   Enabled: false
 
 RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/FilePath:
   Enabled: false
