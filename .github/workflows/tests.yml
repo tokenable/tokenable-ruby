@@ -16,6 +16,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+
       - run: gem install bundler -v 2.2.4
       - run: bundle install
 
