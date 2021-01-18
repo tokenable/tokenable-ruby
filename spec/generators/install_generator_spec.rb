@@ -6,10 +6,7 @@ require 'generators/tokenable/install_generator'
 
 describe Tokenable::Generators::InstallGenerator, type: :generator do
   destination File.expand_path('../../tmp', __dir__)
-
-  before do
-    prepare_destination
-  end
+  before { prepare_destination }
 
   describe 'when creating with a strategy' do
     it 'creates the all the files etc' do
@@ -34,8 +31,8 @@ describe Tokenable::Generators::InstallGenerator, type: :generator do
 
   describe 'when creating without a strategy' do
     it 'does not create the model' do
-      run_generator %w[SomeUser]
-      assert_no_file 'app/models/some_user.rb'
+      run_generator %w[SomeOtherUser]
+      assert_no_file 'app/models/some_other_user.rb'
     end
   end
 end
