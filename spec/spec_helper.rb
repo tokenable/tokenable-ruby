@@ -27,7 +27,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.around(:each) do |example|
+  config.around do |example|
     DatabaseCleaner.cleaning do
       example.run
     end
@@ -39,7 +39,7 @@ RSpec.configure do |config|
   end.to_h
 
   # Reset Tokenable::Config to it's original state after each spec
-  config.after(:each) do |_example|
+  config.after do |_example|
     config_defaults.each do |key, value|
       Tokenable::Config.class_variable_set(key, value)
     end
