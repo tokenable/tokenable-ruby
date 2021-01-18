@@ -43,6 +43,18 @@ RSpec.configure do |config|
     end
   end
 
+  # Keep track of the original config class variables, as we need to reset them after each spec.
+  config_defaults = Tokenable::Config.class_variables.map do |variable|
+    [variable, Tokenable::Config.class_variable_get(variable)]
+  end.to_h
+
+  # Reset Tokenable::Config to it's original state after each spec
+  config.after(:each) do |example|
+    config_defaults.each do |key, value|
+      Tokenable::Config::class_variable_set(key, value)
+    end
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
