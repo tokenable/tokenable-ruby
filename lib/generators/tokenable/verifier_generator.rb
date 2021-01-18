@@ -29,7 +29,7 @@ module Tokenable
       private
 
       def model_exists?
-        File.exist?(File.join(destination_root, 'app/models'))
+        File.exist?(File.join(destination_root, "app/models/#{file_name}.rb"))
       end
 
       def migration_version

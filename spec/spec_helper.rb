@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start 'rails' do
-  add_filter 'spec/dummy'
+SimpleCov.start do
+  add_filter 'spec'
+
+  add_group 'Generators', 'lib/generators'
+  add_group 'Strategies', 'lib/tokenable/strategies'
+  add_group 'Controllers', 'lib/tokenable/controllers'
 end
 
 if ENV['CI']
@@ -29,7 +33,7 @@ require 'database_cleaner'
 RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.clean_with(:truncation, except: %w[ar_internal_metadata])
   end
 
   config.around do |example|

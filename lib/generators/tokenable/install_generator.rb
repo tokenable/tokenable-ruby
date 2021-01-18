@@ -10,9 +10,7 @@ module Tokenable
 
       def install_config
         template 'tokenable.rb.erb', 'config/initializers/tokenable.rb'
-      end
-
-      def setup_route
+        template 'routes.rb.erb', 'config/routes.rb' unless routes_file_exists?
         route "mount Tokenable::Engine => '/api/auth'"
       end
 
@@ -23,6 +21,8 @@ module Tokenable
         end
 
         if options.strategy.in?(list_of_strategies)
+          invoke 'active_record:model', [name], migration: false unless model_exists?
+
           strategy_class = options.strategy.classify
           model_path = "app/models/#{file_name}.rb"
           already_injected = File.open(File.join(destination_root, model_path)).grep(/Tokenable::Strategies/).any?
@@ -38,6 +38,14 @@ module Tokenable
       end
 
       private
+
+      def model_exists?
+        File.exist?(File.join(destination_root, "app/models/#{file_name}.rb"))
+      end
+
+      def routes_file_exists?
+        File.exist?(File.join(destination_root, 'config/routes.rb'))
+      end
 
       def list_of_strategies
         Dir.entries(File.expand_path('../../tokenable/strategies', __dir__))
