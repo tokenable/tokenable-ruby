@@ -12,13 +12,21 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
 
-      - run: cd spec/dummy && bundle install
+      - name: Set up Dummy app Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+        env:
+          BUNDLE_GEMFILE: spec/dummy/Gemfile
+
       - run: cd spec/dummy && bundle exec rails db:create db:migrate
         env:
           RAILS_ENV: test
