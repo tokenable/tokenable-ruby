@@ -1,4 +1,5 @@
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.5
   Exclude:
     - "spec/dummy/**/*"
@@ -27,4 +28,7 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/MethodLength:
+  Enabled: false
+
+Style/ClassVars:
   Enabled: false

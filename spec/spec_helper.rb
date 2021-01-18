@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'simplecov'
 SimpleCov.start 'rails' do
   add_filter 'spec/dummy'
@@ -7,7 +8,7 @@ end
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../spec/dummy/config/environment.rb', __dir__)
-ENV['RAILS_ROOT'] ||= File.dirname(__FILE__) + '../../../spec/dummy'
+ENV['RAILS_ROOT'] ||= "#{File.dirname(__FILE__)}../../../spec/dummy"
 
 require 'rspec/rails'
 
@@ -53,9 +54,9 @@ RSpec.configure do |config|
   end.to_h
 
   # Reset Tokenable::Config to it's original state after each spec
-  config.after(:each) do |example|
+  config.after(:each) do |_example|
     config_defaults.each do |key, value|
-      Tokenable::Config::class_variable_set(key, value)
+      Tokenable::Config.class_variable_set(key, value)
     end
   end
 
