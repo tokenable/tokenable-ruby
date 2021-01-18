@@ -52,3 +52,9 @@ RSpec/ImplicitBlockExpectation:
 
 RSpec/DescribedClass:
   Enabled: false
+
+RSpec/StubbedMock:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
