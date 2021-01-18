@@ -14,7 +14,7 @@ module Tokenable
     end
 
     def current_user
-      @current_user ||= user_class.find(jwt_user_id)
+      @current_user ||= user_class.find_by(id: jwt_user_id)
     rescue Tokenable::Unauthorized
       nil
     end
