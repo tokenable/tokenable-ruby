@@ -19,43 +19,43 @@ describe Tokenable::Authable, type: :controller do
 
   subject { -> { get :index } }
 
-  describe "when generating a token" do
-    let (:user) { User.create! }
-    let (:token) { ControllerWithModule.new.send(:token_from_user, user) }
-    let (:jwt) { JWT.decode(token, Tokenable::Config.secret).first }
+  describe 'when generating a token' do
+    let(:user) { User.create! }
+    let(:token) { ControllerWithModule.new.send(:token_from_user, user) }
+    let(:jwt) { JWT.decode(token, Tokenable::Config.secret).first }
 
-    it 'should contain the user_id' do
+    it 'contains the user_id' do
       expect(jwt['data']['user_id']).to eq(user.id)
     end
 
-    describe "when expiry is enabled" do
+    describe 'when expiry is enabled' do
       before do
         Tokenable::Config.lifespan = 1.minute
       end
 
-      it 'should contain an expiry time' do
+      it 'contains an expiry time' do
         expect(jwt).to have_key('exp')
         expect(jwt['exp']).to be_between(1.minute.ago.to_i, 1.minute.from_now.to_i)
       end
     end
 
-    describe "when expiry is disabled" do
+    describe 'when expiry is disabled' do
       before do
         Tokenable::Config.lifespan = nil
       end
 
-      it 'should not contain the expiry time' do
+      it 'does not contain the expiry time' do
         expect(jwt).not_to have_key('exp')
       end
     end
 
-    describe "when verifier is disabled" do
-      it 'should not contain the verifier' do
+    describe 'when verifier is disabled' do
+      it 'does not contain the verifier' do
         expect(jwt).not_to have_key('verifier')
       end
     end
 
-    describe "when verifier is enabled" do
+    describe 'when verifier is enabled' do
       let(:verifier) { SecureRandom.hex }
       let(:user) { UserWithVerifier.create!(tokenable_verifier: verifier) }
 
@@ -63,12 +63,11 @@ describe Tokenable::Authable, type: :controller do
         Tokenable::Config.user_class = UserWithVerifier
       end
 
-      it 'should contain the verifier' do
+      it 'contains the verifier' do
         expect(jwt['data']).to have_key('verifier')
         expect(jwt['data']['verifier']).to eq(verifier)
       end
     end
-
   end
 
   describe 'when no token is provided' do

@@ -27,6 +27,8 @@ Style/TrailingCommaInHashLiteral:
 
 Layout/LineLength:
   Max: 150
+  Exclude:
+    - "spec/**/*"
 
 Metrics/AbcSize:
   Enabled: false
