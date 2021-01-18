@@ -5,13 +5,13 @@ module Tokenable
     extend ActiveSupport::Concern
 
     def valid_verifier?(verifier)
-      raise Tokenable::Unauthorized, "#{verifier_key} field is missing" unless respond_to?(verifier_key)
+      raise Tokenable::Unauthorized, "#{verifier_key} field is missing" unless has_attribute?(verifier_key)
 
       current_verifier == verifier
     end
 
     def current_verifier
-      send(verifier_key) || issue_verifier!
+      read_attribute(verifier_key) || issue_verifier!
     end
 
     def invalidate_tokens!
@@ -20,7 +20,7 @@ module Tokenable
 
     def issue_verifier!
       update!(verifier_key => SecureRandom.uuid)
-      send(verifier_key)
+      read_attribute(verifier_key)
     end
 
     private
