@@ -7,7 +7,7 @@ class UserWithSecurePasswordStrategy < User
 end
 
 describe Tokenable::Strategies::SecurePassword do
-  subject(:login) { UserWithSecurePasswordStrategy.from_tokenable_params(params) }
+  subject { UserWithSecurePasswordStrategy.from_tokenable_params(params) }
 
   before { Tokenable::Config.user_class = UserWithSecurePasswordStrategy }
 
@@ -20,18 +20,18 @@ describe Tokenable::Strategies::SecurePassword do
   it 'returns nil when the email is incorrect' do
     expect(UserWithSecurePasswordStrategy).to receive(:find_by).with(email: user.email).and_return(nil)
     expect(user).not_to receive(:authenticate)
-    expect(subject(:login)).to be_nil
+    expect(subject).to be_nil
   end
 
   it 'returns nil when the password is incorrect' do
     expect(UserWithSecurePasswordStrategy).to receive(:find_by).with(email: user.email).and_return(user)
     expect(user).to receive(:authenticate).with(password).and_return(false)
-    expect(subject(:login)).to be_nil
+    expect(subject).to be_nil
   end
 
   it 'returns a user when the password is correct' do
     expect(UserWithSecurePasswordStrategy).to receive(:find_by).with(email: user.email).and_return(user)
     expect(user).to receive(:authenticate).with(password).and_return(true)
-    expect(subject(:login)).to be(user)
+    expect(subject).to be(user)
   end
 end

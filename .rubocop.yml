@@ -58,3 +58,6 @@ RSpec/StubbedMock:
 
 RSpec/MessageSpies:
   Enabled: false
+
+RSpec/NamedSubject:
+  Enabled: false
