@@ -10,11 +10,14 @@ class ControllerWithModule
 end
 
 describe Tokenable::Authable, type: :controller do
-  controller(ApplicationController) do
+  controller ApplicationController do
     include Tokenable::Authable
     before_action :require_tokenable_user!
 
-    def index; end
+    def index
+      @user = current_user
+      render plain: 'Hello World'
+    end
   end
 
   subject { -> { get :index } }
@@ -164,5 +167,35 @@ describe Tokenable::Authable, type: :controller do
     end
 
     it { is_expected.to raise_error(Tokenable::Unauthorized, 'Token verifier is invalid') }
+  end
+
+  describe 'when a valid JWT token is provided, and it has not expired, and the verifier is valid' do
+    render_views
+
+    let(:verifier) { SecureRandom.hex }
+    let(:user) { UserWithVerifier.create!(tokenable_verifier: verifier) }
+
+    let(:jwt_data) do
+      {
+        exp: 1.minute.from_now.to_i,
+        data: {
+          user_id: user.id,
+          verifier: verifier,
+        },
+      }
+    end
+
+    before do
+      Tokenable::Config.user_class = UserWithVerifier
+      request.headers['Authorization'] = "Bearer #{JWT.encode(jwt_data, Tokenable::Config.secret, "HS256")}"
+    end
+
+    it 'gets the correct current_user' do
+      get :index
+
+      expect(response).to have_http_status(:ok)
+      expect(assigns[:user]).to eq(user)
+      expect(assigns[:user]).to be_a(Tokenable::Config.user_class)
+    end
   end
 end

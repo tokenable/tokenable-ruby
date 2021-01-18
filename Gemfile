@@ -11,6 +11,7 @@ gem 'rake'
 group :test do
   gem 'codecov', require: false
   gem 'database_cleaner-active_record'
+  gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rubocop'
   gem 'rubocop-rake'
