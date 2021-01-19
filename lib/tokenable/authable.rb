@@ -56,6 +56,8 @@ module Tokenable
 
       jwt_data[:data][:verifier] = user.current_verifier if verifier_enabled?
 
+      raise Tokenable::Unauthorized, 'No secret key was provided' unless jwt_secret
+
       JWT.encode(jwt_data, jwt_secret, 'HS256')
     end
 
