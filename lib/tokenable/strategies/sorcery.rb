@@ -21,8 +21,8 @@ module Tokenable
 
         def parse_auth_params(params)
           [
-            params.require(:email),
-            params.require(:password),
+            params[:email],
+            params[:password],
           ]
         end
       end
