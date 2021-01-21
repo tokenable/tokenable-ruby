@@ -5,7 +5,7 @@ module Tokenable
     include Authable
 
     rescue_from 'Tokenable::Unauthorized' do
-      render json: { error: 'Login failed, please try again.' }
+      render json: { error: 'Login failed, please try again.' }, status: 401
     end
 
     def create
