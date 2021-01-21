@@ -3,7 +3,7 @@
 require_relative 'lib/tokenable/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'tokenable'
+  spec.name          = 'tokenable-ruby'
   spec.version       = Tokenable::VERSION
   spec.authors       = ['Marc Qualie', 'Scott Robertson']
   spec.email         = ['marc@marcqualie.com', 'scott@scottrobertson.me']
