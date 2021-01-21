@@ -84,31 +84,18 @@ Tokenable::Config.lifespan = 7.days
 Tokenable::Config.lifespan = nil
 ```
 
-### Example Usage
+### Example Use Cases
 
-Once you have this setup, you can login. For example, you could login using `axios` in JavaScript:
+Once you have this setup, you will then be able to integrate your Rails API with a mobile app, single page application, or any other type of system. Here are some example use cases:
 
-```js
-const { data } = await axios.post("https://example.com/api/auth", {
-  email: "email@example.com",
-  password: "coolpassword123",
-});
-
-const token = data.data.token;
-const user_id = data.data.user_id;
-```
-
-You then use this token in all future API requests:
-
-```js
-const { data } = await axios.get(`https://example.com/api/user/${user_id}`, {
-  headers: { Authorization: `Bearer ${token}` },
-});
-```
+- [Using Tokenable with Nuxt.js Auth](https://github.com/tokenable/tokenable-ruby/wiki/Integration-with-Nuxt.js-Auth)
+- [Using Tokenable with Axios](https://github.com/tokenable/tokenable-ruby/wiki/Integration-with-Axios)
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bundle exec rspec` to run the tests.
+After checking out the repo, run `bin/setup` to install dependencies.
+
+Then, run `bundle exec rspec` to run the tests.
 
 ## Contributing
 
