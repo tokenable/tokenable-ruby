@@ -14,7 +14,7 @@ Simply send a login request to the authentication endpoint, and Tokenable will r
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'tokenable-ruby', git: 'https://github.com/tokenable/tokenable-ruby.git', branch: 'main'
+gem 'tokenable-ruby'
 ```
 
 And then execute:
