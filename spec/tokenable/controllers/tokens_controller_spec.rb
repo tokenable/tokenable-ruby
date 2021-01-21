@@ -9,18 +9,23 @@ describe Tokenable::TokensController, type: :controller do
   before { Tokenable::Config.user_class = UserWithPassword }
 
   describe 'when no email/password is sent' do
-    subject { -> { post :create } }
-
-    it { is_expected.to raise_error(Tokenable::Unauthorized, 'No user returned by strategy') }
+    it 'returns the correct header and error' do
+      post :create
+      expect(response.status).to eq(401)
+      expect(response.parsed_body['error']).to eq('Login failed, please try again.')
+    end
   end
 
   describe 'when the incorrect password is sent' do
-    subject { -> { post :create, params: { email: user.email, password: 'randompassword' } } }
-
     let(:password) { SecureRandom.hex }
     let(:user) { UserWithPassword.create!(email: 'user@example.com', password: password) }
 
-    it { is_expected.to raise_error(Tokenable::Unauthorized, 'No user returned by strategy') }
+    it 'returns the correct header and error' do
+      post :create, params: { email: user.email, password: 'randompassword' }
+
+      expect(response.status).to eq(401)
+      expect(response.parsed_body['error']).to eq('Login failed, please try again.')
+    end
   end
 
   describe 'when the correct email/password is sent' do
