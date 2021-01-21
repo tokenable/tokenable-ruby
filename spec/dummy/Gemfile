@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'tokenable', path: '../../'
+gem 'tokenable-ruby', path: '../../'
 
 gem 'rails'
 gem 'sqlite3'
