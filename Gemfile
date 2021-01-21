@@ -4,6 +4,9 @@ source 'https://rubygems.org'
 
 gemspec
 
+# For the dummy spec app
+gem 'rails'
+gem 'sqlite3'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'rake'
