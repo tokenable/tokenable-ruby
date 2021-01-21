@@ -90,6 +90,7 @@ Once you have this setup, you will then be able to integrate your Rails API with
 
 - [Using Tokenable with Nuxt.js Auth](https://github.com/tokenable/tokenable-ruby/wiki/Integration-with-Nuxt.js-Auth)
 - [Using Tokenable with Axios](https://github.com/tokenable/tokenable-ruby/wiki/Integration-with-Axios)
+- [Using Tokenable with Curl](https://github.com/tokenable/tokenable-ruby/wiki/Curl-Example)
 
 ## Development
 
