@@ -4,7 +4,9 @@ module Tokenable
   class TokensController < ::ActionController::API
     include Authable
 
-    rescue_from 'Tokenable::Unauthorized' do
+    rescue_from 'Tokenable::Unauthorized' do |exception|
+      Rails.logger.error("Tokenable Auth Failure: #{exception.message}")
+
       render json: { error: 'Login failed, please try again.' }, status: 401
     end
 

@@ -10,6 +10,8 @@ describe Tokenable::TokensController, type: :controller do
 
   describe 'when no email/password is sent' do
     it 'returns the correct header and error' do
+      expect(Rails.logger).to receive(:error).with('Tokenable Auth Failure: No user returned by strategy')
+
       post :create
       expect(response.status).to eq(401)
       expect(response.parsed_body['error']).to eq('Login failed, please try again.')
@@ -21,6 +23,8 @@ describe Tokenable::TokensController, type: :controller do
     let(:user) { UserWithPassword.create!(email: 'user@example.com', password: password) }
 
     it 'returns the correct header and error' do
+      expect(Rails.logger).to receive(:error).with('Tokenable Auth Failure: No user returned by strategy')
+
       post :create, params: { email: user.email, password: 'randompassword' }
 
       expect(response.status).to eq(401)
