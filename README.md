@@ -6,7 +6,7 @@
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 ![Project Status: WIP – Development is in progress](https://www.repostatus.org/badges/latest/wip.svg)
 
-Tokenable is a Rails gem that allows API-only applications a way to authenticate users. This can be helpful when building Single Page Applications, or Mobile Applications.
+Tokenable is a Rails gem that allows API-only applications a way to authenticate users. This can be helpful when building Single Page Applications, or Mobile Applications. It's designed to work with the auth system you are already using, such as Devise, Sorcery and `has_secure_password`. You can also use it with any custom auth systems.
 
 Simply send a login request to the authentication endpoint, and Tokenable will return a token. This token can then be used to access your API, and any authenticated endpoints.
 
