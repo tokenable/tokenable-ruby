@@ -13,7 +13,7 @@ describe Tokenable::Generators::InstallGenerator, type: :generator do
       run_generator %w[SomeUser --strategy=devise]
 
       assert_file 'config/initializers/tokenable.rb' do |content|
-        assert_match(/Tokenable::Config.user_class = SomeUser/, content)
+        assert_match(/Tokenable::Config.user_class = 'SomeUser'/, content)
         assert_match(/Tokenable::Config.lifespan = 7.days/, content)
         assert_match(/Tokenable::Config.secret = Rails.application.secret_key_base/, content)
       end

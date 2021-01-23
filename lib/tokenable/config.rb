@@ -13,7 +13,12 @@ module Tokenable
     mattr_writer :secret, default: -> { Rails.application.secret_key_base }
 
     # The user model that we will perform actions on
-    mattr_writer :user_class, default: -> { User }
+    mattr_writer :user_class, default: -> { 'User' }
+
+    def self.user_class
+      class_name = proc_reader(:user_class)
+      class_name.is_a?(String) ? class_name.constantize : class_name
+    end
 
     # We do this, as some of our defaults need to live in a Proc (as this library is loaded before Rails)
     # This means we can return the value when the method is called, instead of the Proc.
