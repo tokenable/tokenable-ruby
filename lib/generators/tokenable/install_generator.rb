@@ -32,9 +32,7 @@ module Tokenable
           else
             inject_into_file model_path, "  include Tokenable::Strategies::#{strategy_class}\n", after: " < ApplicationRecord\n"
 
-            if options.strategy == 'secure_password'
-              inject_into_file model_path, "  has_secure_password\n", after: " < ApplicationRecord\n"
-            end
+            inject_into_file model_path, "  has_secure_password\n", after: " < ApplicationRecord\n" if options.strategy == 'secure_password'
           end
         else
           say_status :failure, "stargery not found (#{options.strategy}). Available: #{list_of_strategies.join(", ")}", :red
