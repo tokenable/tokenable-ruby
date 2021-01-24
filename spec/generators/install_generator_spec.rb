@@ -27,6 +27,16 @@ describe Tokenable::Generators::InstallGenerator, type: :generator do
         assert_match(/include Tokenable::Strategies::Devise/, content)
       end
     end
+
+    it 'creates the all the files and adds has_secure_password when using secure_password strategy' do
+      run_generator %w[SomeUser --strategy=secure_password]
+
+      assert_file 'app/models/some_user.rb' do |content|
+        assert_match(/class SomeUser < ApplicationRecord/, content)
+        assert_match(/has_secure_password/, content)
+        assert_match(/include Tokenable::Strategies::SecurePassword/, content)
+      end
+    end
   end
 
   describe 'when creating without a strategy' do
